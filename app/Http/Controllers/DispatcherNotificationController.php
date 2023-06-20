@@ -30,8 +30,6 @@ class DispatcherNotificationController extends Controller
                     'dispatcher_id' => $dispatcher->id,
                 ]);
 
-                Dispatcher::where('id', $dispatcherId)->update(['is_available' => true,]);
-
             } else {
                 OrderDispatcher::where('order_id', $orderId)->delete();
                 DeclinedGoods::create([
@@ -39,6 +37,8 @@ class DispatcherNotificationController extends Controller
                     'order_id' => $orderId,
                 ]);
             }
+            
+            Dispatcher::where('id', $dispatcherId)->update(['is_available' => true,]);
         }
 
          return redirect()->route('dispatcher.home');
