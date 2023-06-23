@@ -27,14 +27,14 @@ class DispatcherController extends Controller
         return view('dispatcher.dispatcher_signup');
     }
     
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'name' => 'required',
             'phone' => 'required',
             'email' => 'required|unique:users',
             'password' => 'required|confirmed',
-            'destination' => 'required',
+            'location' => 'required',
             'lga' => 'required',
             'address' => 'required',
         ]);
@@ -49,7 +49,7 @@ class DispatcherController extends Controller
             'password' => $request->password,
         ]);
         
-        return redirect('dispatcher/login');
+        return redirect()->route('dispatcher.login');
     }
     
     public function loginpage()

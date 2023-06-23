@@ -15,13 +15,16 @@
             <thead>
                 <tr>
                     @foreach($orderDispatchers as $orderDispatcher)
-                        @if($orderDispatcher->accepted)
+                        @if($orderDispatcher->status == 'Pending')
+                            <th>Status</th>
+                        @elseif( $orderDispatcher->status == 'Accepted' )
                             <th>Dispatcher's name</th>
                             <th>Dispatcher's contact</th>
                             <th>Carry Status</th>
-                        @endif
-                        @if($orderDispatcher->delivered)
+                        @elseif( $orderDispatcher->status == 'Delivered' )
                             <th>Delivery Status</th>
+                        @elseif( $orderDispatcher->dispatcher_id == 0 )
+                            <th>Status</th>
                         @endif
                     @endforeach
                 </tr>
@@ -29,15 +32,16 @@
             <tbody>
                 <tr>
                     @foreach($orderDispatchers as $orderDispatcher)
-                        @if($orderDispatcher->accepted)
+                        @if( $orderDispatcher->status == 'Pending' )
+                            <th>PENDING: Please be patient, a dispatcher would be available shortly!</th>
+                        @elseif($orderDispatcher->status == 'Accepted')
                             <td>{{ $orderDispatcher->dispatchers->name }}</td>
                             <td>{{ $orderDispatcher->dispatchers->phone }}</td>
                             <td>Goods carried, your goods is on the way</td>
-                        @elseif( !$orderDispatcher->accepted )
-                            <th>Please be patient, a dispatcher would be available shortly!</th>
-                        @endif
-                        @if( $orderDispatcher->delivered )
+                        @elseif( $orderDispatcher->status == 'Delivered' )
                             <td>Cogratulation, your goods as been delivered successfully</td>
+                        @elseif( $orderDispatcher->dispatcher_id == 0 )
+                            <th>Sorry, their is no dispatcher at the moment!</th>
                         @endif
                     @endforeach
                 </tr>

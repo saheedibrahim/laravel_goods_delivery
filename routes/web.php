@@ -26,9 +26,9 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'notification', 'as' => 'notification.'], function()
 {
-    Route::get('/accept/{orderId}', [DispatcherNotificationController::class, 'dispatcherAccepted'])->name('accept');
-    Route::get('/delivered/{orderId}/{dispatcherId}', [DispatcherNotificationController::class, 'goodsDelivered'])->name('delivered');
-    Route::get('/decline/{orderId}/{dispatcherId}/{userId}', [DispatcherNotificationController::class, 'getAnotherDispatcher'])->name('decline');
+    Route::get('/accept/{orderId}', [OrderDispatcherController::class, 'dispatcherAccepted'])->name('accept');
+    Route::get('/delivered/{orderId}/{dispatcherId}', [OrderDispatcherController::class, 'goodsDelivered'])->name('delivered');
+    Route::get('/decline/{orderId}/{dispatcherId}/{userId}', [OrderDispatcherController::class, 'getAnotherDispatcher'])->name('decline');
 });
 
 Route::group(['prefix' => 'user', 'as' => 'user.'], function()
@@ -48,7 +48,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function()
 Route::group(['prefix' => 'dispatcher', 'as' => 'dispatcher.'], function()
 {
     Route::get('/signup', [DispatcherController::class, 'signuppage'])->name('signup');
-    Route::post('/signup', [DispatcherController::class, 'store'])->name('signup');
+    Route::post('/signup', [DispatcherController::class, 'create'])->name('signup');
 
     Route::get('/login', [DispatcherController::class, 'loginpage'])->name('login');
     Route::post('/login', [DispatcherController::class, 'login'])->name('login');

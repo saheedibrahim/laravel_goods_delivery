@@ -16,9 +16,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('order_id');
             $table->integer('dispatcher_id');
-            $table->boolean('declined')->default(false);
-            $table->boolean('accepted')->default(false);
-            $table->boolean('delivered')->default(false);
+            $table->enum('status', ['Pending', 'Declined', 'Accepted', 'Delivered'])->default('Pending');
             $table->timestamps();
         });
     }

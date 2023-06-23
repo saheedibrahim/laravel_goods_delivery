@@ -13,6 +13,7 @@ class OrderDispatcher extends Model
         'order_id',
         'user_id',
         'dispatcher_id',
+        'status',
     ];
 
     public function dispatcher(): BelongsTo

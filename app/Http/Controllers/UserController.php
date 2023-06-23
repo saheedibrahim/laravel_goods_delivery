@@ -21,9 +21,9 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'phone' => 'required',
             'email' => 'required',
-            'destination' => 'required',
+            'phone' => 'required',
+            'location' => 'required',
             'lga' => 'required',
             'address' => 'required',
             'password' => 'required|confirmed',
@@ -34,7 +34,7 @@ class UserController extends Controller
             return back()->with('error', 'Email already in use');
         }
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'phone' => $request->phone,
             'email' => $request->email,
@@ -43,6 +43,7 @@ class UserController extends Controller
             'address' => $request->address,
             'password' => $request->password,
         ]);
+        
         return redirect()->route('user.login')->with('success', 'User signup successfully');
     }
     
