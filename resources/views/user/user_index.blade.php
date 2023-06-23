@@ -48,10 +48,5 @@
             </tbody>
         </table>
     @endif
-    @if($declinedGoods->count() > 0)
-        @foreach($declinedGoods as $declinedGood)
-        <p>{{ $declinedGood->message }}</p>
-        @endforeach
-    @endif
 </body>
 </html>

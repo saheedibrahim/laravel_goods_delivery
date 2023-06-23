@@ -15,21 +15,22 @@
             @foreach($orderDispatchers as $orderDispatcher)
             <thead>
                 @if($orderDispatcher->status == 'Pending' || $orderDispatcher->status == 'Accepted')
-                {{--<tr><h3>You have an order!</h3></tr>--}}
+                {{-- <tr><h3>You have an order!</h3></tr>--}}
                 <tr>
                     <th>OrderID</th>
                     <th>Destination</th>
                     <th>Weight</th>
                     <th>User's name</th>
-                    <th>User's contact</th> 
-                {{--@elseif($orderDispatcher->status == 'Pending')--}}
+                    <th>User's contact</th>
+                @if($orderDispatcher->status == 'Pending')
                     <th>Accept</th>               
                     <th>Decline</th>
-                @elseif($orderDispatcher->status == 'Declined')
-                    <th>In decline</th>
                 @elseif($orderDispatcher->status == 'Accepted')
                     <th>Delivered</th>
                 @endif
+            @elseif($orderDispatcher->status == 'Declined')
+                    <th></th>
+            @endif
                 </tr>
             </thead>
             <tbody>
@@ -41,19 +42,18 @@
                     <td>{{ $orderDispatcher->orders->weight }}</td>
                     <td>{{ $orderDispatcher->users->name }}</td>
                     <td>{{ $orderDispatcher->users->phone }}</td>
-                {{--@elseif($orderDispatcher->status == 'Pending')--}}
-                    <td>
-                        <a href="{{ route('notification.accept', $orderDispatcher->orders->id) }}">Accept</a>
-                    </td>
-                    <td>
+                    @if($orderDispatcher->status == 'Pending')
+                        <td>
+                            <a href="{{ route('notification.accept', $orderDispatcher->orders->id) }}">Accept</a>
+                        </td>
+                        <td>
                         <button><a href="/notification/decline/{{ $orderDispatcher->orders->id }}/{{ $orderDispatcher->dispatchers->id }}/{{ $orderDispatcher->users->id }}">Decline</a></button>
-                    </td>
+                        </td>
+                    @elseif($orderDispatcher->status == 'Accepted')
+                        <button><a href="/notification/delivered/{{ $orderDispatcher->orders->id }}/{{ $orderDispatcher->dispatchers->id }}">Delivered</a></button>
+                    @endif
                 @elseif($orderDispatcher->status == 'Declined')
                     <td>You do not have any order</td>
-                @elseif($orderDispatcher->status == 'Accepted')
-                        <button><a href="/notification/delivered/{{ $orderDispatcher->orders->id }}/{{ $orderDispatcher->dispatchers->id }}">Delivered</a></button>
-                @else
-                    <td></td>
                 @endif
             </tr>
             </tbody>

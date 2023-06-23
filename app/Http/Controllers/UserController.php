@@ -70,9 +70,8 @@ class UserController extends Controller
         $user = Auth::guard('web')->user();
         $user_id = Auth::guard('web')->id();
         $orderDispatchers = OrderDispatcher::where('user_id', $user_id)->get();
-        $declinedGoods = DeclinedGoods::where('user_id', $user_id)->get();
 
-        return view('user.user_index', ['user' => $user, 'orderDispatchers' => $orderDispatchers, 'declinedGoods' => $declinedGoods]);
+        return view('user.user_index', ['user' => $user, 'orderDispatchers' => $orderDispatchers]);
     }
 
     public function logout()
