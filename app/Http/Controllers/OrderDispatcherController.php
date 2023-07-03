@@ -11,15 +11,23 @@ class OrderDispatcherController extends Controller
 {   
      public function getAnotherDispatcher($orderId, $dispatcherId, $userId)
      {
-        // $dispatcherDecline = OrderDispatcher::where('order_id', $orderId)->where('dispatcher_id', $dispatcherId)->update(['status' => 'Declined']);
-
-        $dispatcherDecline = OrderDispatcher::where(['order_id', '=', $orderId], ['dispatcher_id', '=', $dispatcherId])->update(['status' => 'Declined']);
+        $dispatcherDecline = OrderDispatcher::where([
+            'order_id' => $orderId,
+            'dispatcher_id' => $dispatcherId
+            ])->update(['status' => 'Declined']);
         if($dispatcherDecline){
-            // $dispatcherDeclineIds = OrderDispatcher::where('order_id', $orderId)->where('status', 'Declined')->pluck('dispatcher_id');
-            $dispatcherDeclineIds = OrderDispatcher::where(['order_id', '=', $orderId], ['status', '=', 'Declined'])->pluck('dispatcher_id');
+            $dispatcherDeclineIds = OrderDispatcher::where([
+                'order_id' => $orderId,
+                'status' => 'Declined'
+                ])->pluck('dispatcher_id');
+
             $user = User::find($userId);
-            // $dispatcher = Dispatcher::whereNotIn('id', $dispatcherDeclineIds)->where('is_available', true)->where('location', $user->location)->where('lga', $user->lga)->first();
-            $dispatcher = Dispatcher::whereNotIn('id', $dispatcherDeclineIds)->where(['is_available', '=', true], ['location', '=', $user->location], ['lga', '=', $user->lga])->first();
+            $dispatcher = Dispatcher::whereNotIn('id', $dispatcherDeclineIds)
+                    ->where([
+                        'is_available' => true,
+                        'location' => $user->location,
+                        'lga' => $user->lga,
+                        ]) ->first();
             if($dispatcher){
                 $dispatcherDecline = OrderDispatcher::create([
                     'order_id' => $orderId,

@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DeclinedGoods;
 use App\Models\Dispatcher;
-use App\Models\DispatcherDecline;
 use App\Models\Order;
 use App\Models\OrderDispatcher;
 use App\Models\User;
@@ -50,14 +48,21 @@ class OrderController extends Controller
 
         if($order){
             $user = Auth::user();
-            $dispatcher = Dispatcher::where('is_available', true)->where('location', $user->location)->where('lga', $user->lga)->first();
+            $dispatcher = Dispatcher::where([
+                'is_available'=> true,
+                'location'=> $user->location,
+                'lga'=> $user->lga,
+                ])->first(); 
+            
             if($dispatcher){
                 OrderDispatcher::create([
                 'order_id' => $order->id,
                 'user_id' => Auth::id(),
                 'dispatcher_id' => $dispatcher->id,
                 ]);
-                Dispatcher::where('id', $dispatcher->id)->update(['is_available' => false]);
+
+                Dispatcher::where('id', $dispatcher->id)
+                          ->update(['is_available' => false]);
             } else {
                     $orderDispatcher = OrderDispatcher::create([
                     'order_id' => $order->id,
@@ -65,7 +70,6 @@ class OrderController extends Controller
                     'dispatcher_id' => 0,
                     'status' => 'Declined',
                 ]);
-                // dd($orderDispatcher);
             }
         }
 
