@@ -64,7 +64,7 @@ class OrderController extends Controller
                 Dispatcher::where('id', $dispatcher->id)
                           ->update(['is_available' => false]);
             } else {
-                    $orderDispatcher = OrderDispatcher::create([
+                    OrderDispatcher::create([
                     'order_id' => $order->id,
                     'user_id' => Auth::id(),
                     'dispatcher_id' => 0,

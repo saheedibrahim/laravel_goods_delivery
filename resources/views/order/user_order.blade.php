@@ -14,7 +14,7 @@
     <form action="{{ route('user.order') }}" method="post">
         @csrf
         <select name="destination" id="">
-            <option value=""></option>
+            <option value="">Select state</option>
             <option value="lagos">Lagos</option>
             <option value="oyo">Oyo</option>
             <option value="ogun">Ogun</option>
