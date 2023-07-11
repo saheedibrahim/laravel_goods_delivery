@@ -10,8 +10,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class User extends Authenticatable
 {
@@ -52,11 +50,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function orderOrderDispatcher(): HasOneThrough
-    {
-        return $this->hasOneThrough(OrderDispatcher::class, Order::class)->withDefault();
-    }
-
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
@@ -66,14 +59,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(OrderDispatcher::class);
     }
-    
-    public function dispatcherNotification() : HasMany
-    {
-        return $this->hasMany(DispatcherNotification::class);
-    }
-    
-    public function declinedGoods() : HasMany
-    {
-        return $this->hasMany(DeclinedGoods::class);
-    } 
 }

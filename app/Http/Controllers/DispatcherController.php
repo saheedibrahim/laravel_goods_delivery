@@ -3,22 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dispatcher;
-use App\Models\Message;
-use App\Models\Order;
 use App\Models\OrderDispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class DispatcherController extends Controller
 {   
     public function index()
     {
         $dispatcherID = Auth::guard('dispatcher')->id();
-        $orderDispatchers = OrderDispatcher::where('dispatcher_id', $dispatcherID)->get();
-        $dispatchers = new Dispatcher;
+        $orderDispatchers = OrderDispatcher::with(['orders', 'users'])
+                ->where('dispatcher_id', $dispatcherID)->get();
         
-        return view('dispatcher.dispatcher_index', ['orderDispatchers' => $orderDispatchers, 'dispatchers' => $dispatchers]);
+        return view('dispatcher.dispatcher_index', ['orderDispatchers' => $orderDispatchers]);
     }
     
 

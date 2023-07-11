@@ -15,11 +15,6 @@ class OrderDispatcher extends Model
         'dispatcher_id',
         'status',
     ];
-
-    public function dispatcher(): BelongsTo
-    {
-        return $this->belongsTo(Dispatcher::class);
-    }
     
     public function orders(): BelongsTo
     {

@@ -53,14 +53,4 @@ class Dispatcher extends Authenticatable
     {
         return $this->hasMany(OrderDispatcher::class);
     }
-    
-    public function dispatcherNotifications(): HasMany
-    {
-        return $this->hasMany(DispatcherNotification::class);
-    }
-    
-    public function dispatcherDecline(): HasMany
-    {
-        return $this->hasMany(DispatcherDecline::class);
-    }
 }
