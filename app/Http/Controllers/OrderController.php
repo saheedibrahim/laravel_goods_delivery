@@ -29,48 +29,33 @@ class OrderController extends Controller
         $order->user_id = Auth::guard('web')->id();
         $orderID = rand(900000, 999999);
         $checkOrderID = Order::where('orderID', $orderID);
-        if($checkOrderID){
-            $order->orderID = rand(900000, 999999);
-        } else {            
-            $order->orderID = $orderID;
-        }
+        $order->orderID = $checkOrderID ? rand(900000, 999999) : $orderID;
         $order->destination = $request->destination;
         $order->lga = $request->lga;
         $order->address = $request->address;
         $order->weight = $request->weight;
-        if($request->destination == 'lagos'){
-            $order->amount = $request->weight * 1000;
-        } else {
-            $order->amount = $request->weight * 1000 + 5000;
-        }
+        $order->amount = $request->destination == 'lagos' ?
+                $request->weight * 1000 : $request->weight * 1000 + 5000;
 
         $order->save();
 
-        if($order){
-            $user = Auth::user();
-            $dispatcher = Dispatcher::where([
-                'is_available'=> true,
-                'location'=> $user->location,
-                'lga'=> $user->lga,
-                ])->first(); 
-            
-            if($dispatcher){
-                OrderDispatcher::create([
-                'order_id' => $order->id,
-                'user_id' => Auth::id(),
-                'dispatcher_id' => $dispatcher->id,
-                ]);
+        $user = Auth::user();
+        $dispatcher = Dispatcher::where([
+            'is_available'=> true,
+            'location'=> $user->location,
+            'lga'=> $user->lga,
+            ])->first();
+        
+        OrderDispatcher::create([
+            'order_id' => $order->id,
+            'user_id' => Auth::id(),
+            'dispatcher_id' => $dispatcher ? $dispatcher->id : 0,
+            'status' => $dispatcher ? 'Pending' : 'Declined',
+        ]);
 
-                Dispatcher::where('id', $dispatcher->id)
-                          ->update(['is_available' => false]);
-            } else {
-                    OrderDispatcher::create([
-                    'order_id' => $order->id,
-                    'user_id' => Auth::id(),
-                    'dispatcher_id' => 0,
-                    'status' => 'Declined',
-                ]);
-            }
+        if($dispatcher){               
+                        Dispatcher::where('id', $dispatcher->id)
+                                    ->update(['is_available' => false]);
         }
 
         return redirect()->route('user.home');
