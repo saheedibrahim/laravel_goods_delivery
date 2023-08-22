@@ -13,8 +13,6 @@
         <input type="text" name="name" placeholder="Full name"><br><br>
         <input type="text" name="phone" placeholder="Phone number"><br><br>
         <input type="email" name="email" placeholder="Email"><br><br>
-    <form action="{{ route('user.order') }}" method="post">
-        @csrf
         <select name="location" id="">
             <option value=""></option>
             <option value="lagos">Lagos</option>
