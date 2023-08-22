@@ -16,6 +16,7 @@
         <select name="location" id="">
             <option value=""></option>
             <option value="lagos">Lagos</option>
+            <option value="akure">Akure</option>
             <option value="oyo">Oyo</option>
             <option value="ogun">Ogun</option>
             <option value="kwara">Kwara</option>
